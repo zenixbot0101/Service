@@ -29,11 +29,11 @@ public enum DetectionState
 public sealed class DetectionResult
 {
     // ── Subject ───────────────────────────────────────────────────────────────
-    public int    Pid         { get; init; }
-    public string ProcessName { get; init; } = string.Empty;
+    public int    Pid         { get; set; }
+    public string ProcessName { get; set; } = string.Empty;
 
     // ── Scores ────────────────────────────────────────────────────────────────
-    public RiskScore Score    { get; init; } = new();
+    public RiskScore Score    { get; set; } = new();
 
     // ── State machine ─────────────────────────────────────────────────────────
     public DetectionState State          { get; set; } = DetectionState.Normal;
@@ -47,20 +47,20 @@ public sealed class DetectionResult
 
     // ── Evidence ──────────────────────────────────────────────────────────────
     /// <summary>Ordered list of evidence items that led to this result.</summary>
-    public List<string> Evidence  { get; init; } = new();
+    public List<string> Evidence  { get; set; } = new();
 
     /// <summary>Network connections that contributed to the score.</summary>
-    public List<NetworkConnectionInfo> SuspiciousConnections { get; init; } = new();
+    public List<NetworkConnectionInfo> SuspiciousConnections { get; set; } = new();
 
     /// <summary>Persistence entries found for this process.</summary>
-    public List<string> PersistenceEntries { get; init; } = new();
+    public List<string> PersistenceEntries { get; set; } = new();
 
     // ── Snapshot references ───────────────────────────────────────────────────
     public ProcessSnapshot?  ProcessSnapshot  { get; set; }
     public GpuSnapshot?      GpuSnapshot      { get; set; }
 
     // ── Metadata ──────────────────────────────────────────────────────────────
-    public DateTime EvaluatedAt { get; init; } = DateTime.UtcNow;
+    public DateTime EvaluatedAt { get; set; } = DateTime.UtcNow;
 
     // ── Convenience ───────────────────────────────────────────────────────────
     public bool IsActionable =>
@@ -73,47 +73,47 @@ public sealed class DetectionResult
 /// </summary>
 public sealed class IncidentEvidence
 {
-    public string IncidentId  { get; init; } = Guid.NewGuid().ToString();
-    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
+    public string IncidentId  { get; set; } = Guid.NewGuid().ToString();
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-    public ProcessInfo  Process { get; init; } = new();
-    public SystemInfo   System  { get; init; } = new();
+    public ProcessInfo  Process { get; set; } = new();
+    public SystemInfo   System  { get; set; } = new();
 
-    public List<NetworkConnectionInfo> Network { get; init; } = new();
-    public List<string> PersistenceEntries     { get; init; } = new();
+    public List<NetworkConnectionInfo> Network { get; set; } = new();
+    public List<string> PersistenceEntries     { get; set; } = new();
 
-    public ScoreInfo  Scores   { get; init; } = new();
-    public string     Decision { get; init; } = string.Empty;
-    public string     Action   { get; init; } = string.Empty;
+    public ScoreInfo  Scores   { get; set; } = new();
+    public string     Decision { get; set; } = string.Empty;
+    public string     Action   { get; set; } = string.Empty;
 
-    public List<string> Evidence { get; init; } = new();
+    public List<string> Evidence { get; set; } = new();
 
     public sealed class ProcessInfo
     {
-        public int    Pid          { get; init; }
-        public string Name         { get; init; } = string.Empty;
-        public string Path         { get; init; } = string.Empty;
-        public string CommandLine  { get; init; } = string.Empty;
-        public string Parent       { get; init; } = string.Empty;
-        public string Sha256       { get; init; } = string.Empty;
-        public string Publisher    { get; init; } = string.Empty;
-        public string Username     { get; init; } = string.Empty;
-        public double LifetimeMinutes { get; init; }
+        public int    Pid          { get; set; }
+        public string Name         { get; set; } = string.Empty;
+        public string Path         { get; set; } = string.Empty;
+        public string CommandLine  { get; set; } = string.Empty;
+        public string Parent       { get; set; } = string.Empty;
+        public string Sha256       { get; set; } = string.Empty;
+        public string Publisher    { get; set; } = string.Empty;
+        public string Username     { get; set; } = string.Empty;
+        public double LifetimeMinutes { get; set; }
     }
 
     public sealed class SystemInfo
     {
-        public double CpuPercent   { get; init; }
-        public double GpuPercent   { get; init; }
-        public double VramPercent  { get; init; }
-        public double MemoryMb     { get; init; }
+        public double CpuPercent   { get; set; }
+        public double GpuPercent   { get; set; }
+        public double VramPercent  { get; set; }
+        public double MemoryMb     { get; set; }
     }
 
     public sealed class ScoreInfo
     {
-        public int    MiningScore    { get; init; }
-        public double AiConfidence   { get; init; }
-        public int    StrongIndicators { get; init; }
-        public string RiskLevel      { get; init; } = string.Empty;
+        public int    MiningScore    { get; set; }
+        public double AiConfidence   { get; set; }
+        public int    StrongIndicators { get; set; }
+        public string RiskLevel      { get; set; } = string.Empty;
     }
 }

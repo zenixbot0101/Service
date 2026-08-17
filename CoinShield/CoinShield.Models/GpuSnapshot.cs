@@ -11,8 +11,8 @@ namespace CoinShield.Models;
 public sealed class GpuSnapshot
 {
     // ── Adapter identity ──────────────────────────────────────────────────────
-    public int    AdapterIndex { get; init; }
-    public string AdapterName  { get; init; } = string.Empty;
+    public int    AdapterIndex { get; set; }
+    public string AdapterName  { get; set; } = string.Empty;
 
     // ── Utilisation ───────────────────────────────────────────────────────────
     /// <summary>Overall GPU engine utilisation 0–100 %.</summary>
@@ -34,9 +34,9 @@ public sealed class GpuSnapshot
 
     // ── Per-process attribution ───────────────────────────────────────────────
     /// <summary>Map of PID → estimated GPU utilisation % for processes using this adapter.</summary>
-    public Dictionary<int, double> ProcessGpuUsage  { get; init; } = new();
+    public Dictionary<int, double> ProcessGpuUsage  { get; set; } = new();
     /// <summary>Map of PID → VRAM usage in MB for processes using this adapter.</summary>
-    public Dictionary<int, double> ProcessVramUsage { get; init; } = new();
+    public Dictionary<int, double> ProcessVramUsage { get; set; } = new();
 
     // ── CUDA ──────────────────────────────────────────────────────────────────
     public bool   CudaAvailable { get; set; }
@@ -44,7 +44,7 @@ public sealed class GpuSnapshot
     public int    CudaActiveProcessCount { get; set; }
 
     // ── Metadata ──────────────────────────────────────────────────────────────
-    public DateTime SnapshotTime { get; init; } = DateTime.UtcNow;
+    public DateTime SnapshotTime { get; set; } = DateTime.UtcNow;
 
     // ── Derived helpers ───────────────────────────────────────────────────────
     /// <summary>True when GPU utilisation is sustained above a threshold for scoring use only —

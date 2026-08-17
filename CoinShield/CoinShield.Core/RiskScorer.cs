@@ -160,7 +160,7 @@ public sealed class RiskScorer
         // an anomalous memory profile is flagged. This catches process-hollowing
         // attacks where xmrig is injected into e.g. python.exe or svchost.exe.
         if (input.SuspiciousMemoryProfile &&
-            (input.Process.IsSigned || input.Allowlist?.IsTrustedApplication == true))
+            (input.Process.IsSigned || input.Allowlist?.Verdict == AllowlistVerdict.Trusted))
         {
             score.HollowingScore = 30;
             reasons.Add("Trusted/signed binary has suspicious memory profile — possible process hollowing. (+30)");

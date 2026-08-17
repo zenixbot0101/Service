@@ -9,21 +9,21 @@ namespace CoinShield.Models;
 /// </summary>
 public sealed class NetworkConnectionInfo
 {
-    public int     OwnerPid          { get; init; }
-    public string  OwnerProcessName  { get; init; } = string.Empty;
+    public int     OwnerPid          { get; set; }
+    public string  OwnerProcessName  { get; set; } = string.Empty;
 
-    public IPAddress LocalAddress    { get; init; } = IPAddress.None;
-    public int       LocalPort       { get; init; }
-    public IPAddress RemoteAddress   { get; init; } = IPAddress.None;
-    public int       RemotePort      { get; init; }
+    public IPAddress LocalAddress    { get; set; } = IPAddress.None;
+    public int       LocalPort       { get; set; }
+    public IPAddress RemoteAddress   { get; set; } = IPAddress.None;
+    public int       RemotePort      { get; set; }
 
-    public string  Protocol          { get; init; } = string.Empty; // TCP / UDP
-    public string  State             { get; init; } = string.Empty; // ESTABLISHED, LISTEN, …
+    public string  Protocol          { get; set; } = string.Empty; // TCP / UDP
+    public string  State             { get; set; } = string.Empty; // ESTABLISHED, LISTEN, …
 
     /// <summary>Reverse-DNS hostname for the remote address, if resolved.</summary>
     public string  RemoteHostname    { get; set;  } = string.Empty;
 
-    public DateTime FirstSeen        { get; init; } = DateTime.UtcNow;
+    public DateTime FirstSeen        { get; set; } = DateTime.UtcNow;
     public DateTime LastSeen         { get; set;  } = DateTime.UtcNow;
     public TimeSpan Duration         => LastSeen - FirstSeen;
 
@@ -58,15 +58,15 @@ public sealed class NetworkConnectionInfo
 /// </summary>
 public sealed class NetworkSnapshot
 {
-    public List<NetworkConnectionInfo> Connections { get; init; } = new();
+    public List<NetworkConnectionInfo> Connections { get; set; } = new();
 
     /// <summary>All unique remote IPs observed this cycle.</summary>
-    public HashSet<string> RemoteAddresses { get; init; } = new();
+    public HashSet<string> RemoteAddresses { get; set; } = new();
 
     /// <summary>Total active TCP connections on this system.</summary>
     public int TotalTcpConnections { get; set; }
 
-    public DateTime SnapshotTime { get; init; } = DateTime.UtcNow;
+    public DateTime SnapshotTime { get; set; } = DateTime.UtcNow;
 
     // ── Convenience queries ───────────────────────────────────────────────────
     /// <summary>Returns all connections owned by the given PID.</summary>

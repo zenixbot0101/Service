@@ -64,7 +64,7 @@ public sealed class RiskScore
     public int StrongIndicatorCount { get; set; }
 
     /// <summary>Human-readable explanations for each contributing signal.</summary>
-    public List<string> Reasons { get; init; } = new();
+    public List<string> Reasons { get; set; } = new();
 
     // ── Derived risk level ────────────────────────────────────────────────────
     public RiskLevel Level => Total switch
@@ -75,7 +75,7 @@ public sealed class RiskScore
         _     => RiskLevel.ConfirmedMining,
     };
 
-    public DateTime EvaluatedAt { get; init; } = DateTime.UtcNow;
+    public DateTime EvaluatedAt { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>Four-tier risk classification used throughout the detection pipeline.</summary>

@@ -1,0 +1,93 @@
+{
+  "monitoring": {
+    "cpuIntervalSeconds": 1,
+    "gpuIntervalSeconds": 1,
+    "processIntervalSeconds": 2,
+    "networkIntervalSeconds": 5,
+    "persistenceScanIntervalSeconds": 30,
+    "deepAnalysisMinLifetimeSeconds": 120
+  },
+
+  "detection": {
+    "suspiciousThreshold": 30,
+    "highRiskThreshold": 60,
+    "confirmedMiningThreshold": 85,
+    "confirmationSeconds": 60,
+    "minimumStrongIndicators": 2,
+    "gpuUtilizationThreshold": 90.0,
+    "gpuSustainedMinutes": 10,
+    "mode": "Monitor"
+  },
+
+  "scoring": {
+    "gpuSustained10Min": 10,
+    "gpuSustained30Min": 10,
+    "unknownExecutable": 15,
+    "unsignedExecutable": 10,
+    "suspiciousPath": 10,
+    "suspiciousCommandLine": 25,
+    "suspiciousNetwork": 25,
+    "miningProtocol": 30,
+    "suspiciousPersistence": 20,
+    "knownMaliciousHash": 100,
+    "aiTrainingMitigation": 40,
+    "trustedApplication": 50,
+    "trustedPublisher": 15,
+    "userLaunchedProcess": 10
+  },
+
+  "aiProtection": {
+    "enabled": true,
+    "minimumConfidence": 0.65
+  },
+
+  "response": {
+    "terminateMiningProcess": false,
+    "emergencyShutdown": false,
+    "shutdownGraceSeconds": 30
+  },
+
+  "logging": {
+    "eventLog": true,
+    "jsonLog": true,
+    "retentionDays": 14,
+    "verbosity": 2
+  },
+
+  "paths": {
+    "logDirectory": "",
+    "allowlistFile": "allowlist.json"
+  },
+
+  "webMining": {
+    "enabled": true,
+    "confirmedMiningThreshold": 60,
+    "suspiciousThreshold": 35,
+    "browserIntervalSeconds": 5,
+    "rendererCpuThreshold": 50.0,
+    "longRunningWorkerSeconds": 30,
+    "enableDomainBlocking": true,
+    "miningDomainsFile": "mining-domains.json",
+    "enableBrowserCorrelation": true,
+    "enableResurrectionDetection": true,
+    "resurrectionScoreBonus": 30,
+    "miningScriptDomainBonus": 50,
+    "miningPoolDomainBonus": 35
+  },
+
+  "cloud": {
+    "_comment": "Settings for cloud VM deployments (GCP, Azure, AWS).",
+
+    "enabled": true,
+
+    "gcpMetadataTimeoutSeconds": 2,
+
+    "reduceWmiOverheadOnCloud": true,
+
+    "allowGcpModeOverride": true,
+
+    "serverCoreMode": "HeadlessOnly",
+
+    "logInstanceMetadataAtStartup": true
+  }
+}

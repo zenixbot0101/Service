@@ -14,8 +14,8 @@ namespace CoinShield.Core;
 
 internal sealed class ProcessTrackingState
 {
-    public int             Pid                   { get; init; }
-    public string          Name                  { get; init; } = string.Empty;
+    public int             Pid                   { get; set; }
+    public string          Name                  { get; set; } = string.Empty;
     public DetectionState  State                 { get; set; }  = DetectionState.Normal;
     public DateTime?       SuspicionStartTime    { get; set; }
     public DateTime?       HighRiskStartTime     { get; set; }

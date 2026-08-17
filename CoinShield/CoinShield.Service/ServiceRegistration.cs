@@ -157,5 +157,5 @@ internal static class ServiceRegistration
 }
 
 // Marker to trigger the DnsAnalyzer→NetworkAnalyzer wiring via DI resolution
-internal interface INetworkDnsWiring { }
+public interface INetworkDnsWiring { }
 internal sealed class NetworkDnsWiringNoop : INetworkDnsWiring { }

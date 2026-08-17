@@ -25,12 +25,12 @@
     <InformationalVersion>1.1.0+server2022</InformationalVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting"                  Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices"  Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.EventLog"         Version="10.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json"       Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="10.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
     <!-- HTTP client for GCP metadata server queries (lightweight, no extra deps) -->
-    <PackageReference Include="Microsoft.Extensions.Http"                     Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.11" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoinShield.Core\CoinShield.Core.csproj" />

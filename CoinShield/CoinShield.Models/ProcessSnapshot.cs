@@ -10,20 +10,20 @@ namespace CoinShield.Models;
 public sealed class ProcessSnapshot
 {
     // ── Identity ──────────────────────────────────────────────────────────────
-    public int    Pid          { get; init; }
-    public string Name         { get; init; } = string.Empty;
-    public string Path         { get; init; } = string.Empty;
-    public string CommandLine  { get; init; } = string.Empty;
+    public int    Pid          { get; set; }
+    public string Name         { get; set; } = string.Empty;
+    public string Path         { get; set; } = string.Empty;
+    public string CommandLine  { get; set; } = string.Empty;
 
     // ── Lineage ───────────────────────────────────────────────────────────────
-    public int    ParentPid          { get; init; }
-    public string ParentName         { get; init; } = string.Empty;
-    public string ParentPath         { get; init; } = string.Empty;
-    public string GrandparentName    { get; init; } = string.Empty;
-    public List<int> ChildPids       { get; init; } = new();
+    public int    ParentPid          { get; set; }
+    public string ParentName         { get; set; } = string.Empty;
+    public string ParentPath         { get; set; } = string.Empty;
+    public string GrandparentName    { get; set; } = string.Empty;
+    public List<int> ChildPids       { get; set; } = new();
 
     // ── Ownership ─────────────────────────────────────────────────────────────
-    public string Username { get; init; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 
     // ── Resource usage ────────────────────────────────────────────────────────
     /// <summary>CPU utilisation 0–100 %.</summary>
@@ -32,7 +32,7 @@ public sealed class ProcessSnapshot
     public double MemoryMb    { get; set; }
 
     // ── Lifetime ──────────────────────────────────────────────────────────────
-    public DateTime StartTime { get; init; }
+    public DateTime StartTime { get; set; }
     public TimeSpan Lifetime  => DateTime.UtcNow - StartTime;
 
     // ── Trust signals ─────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ public sealed class ProcessSnapshot
     public bool     IsSystemPath { get; set; }
 
     // ── Metadata ──────────────────────────────────────────────────────────────
-    public DateTime SnapshotTime { get; init; } = DateTime.UtcNow;
+    public DateTime SnapshotTime { get; set; } = DateTime.UtcNow;
 }
 
 /// <summary>Rough classification of the executable's filesystem location.</summary>

@@ -305,8 +305,6 @@ public sealed class DomainReputationEngine
 
     private DomainReputation ComputeReputation(string domain)
     {
-        var reputation = new DomainReputation { Domain = domain };
-
         // ── 0. File-loaded legitimate whitelist (highest priority) ─────────────
         if (_legitimateDomains.Contains(domain) ||
             _legitimateDomains.Any(ld => domain.EndsWith($".{ld}", StringComparison.OrdinalIgnoreCase)))
@@ -372,6 +370,18 @@ public sealed class DomainReputationEngine
 
         // Check if domain is crypto-related but legitimate
         var isCrypto = IsCryptoRelated(domain);
+        
+        // Check suspicious patterns
+        int suspiciousMatches = 0;
+        foreach (var pattern in _suspiciousPatterns)
+        {
+            if (pattern.IsMatch(domain))
+            {
+                suspiciousMatches++;
+            }
+        }
+
+        // Build final reputation based on all checks
         if (isCrypto)
         {
             // Check if it's a legitimate service
@@ -394,39 +404,49 @@ public sealed class DomainReputationEngine
                 };
             }
 
-            // Crypto-related but unknown
-            reputation.IsCryptoRelated = true;
-            reputation.ReputationScore = 40;  // Lower score but not necessarily malicious
-            reputation.ThreatLevel = ThreatLevel.Low;
-            reputation.Category = "crypto-related";
-        }
-
-        // Check suspicious patterns
-        int suspiciousMatches = 0;
-        foreach (var pattern in _suspiciousPatterns)
-        {
-            if (pattern.IsMatch(domain))
+            // Crypto-related but unknown - with suspicious pattern check
+            int baseScore = 40;
+            if (suspiciousMatches > 0)
             {
-                suspiciousMatches++;
+                baseScore = Math.Max(0, baseScore - (suspiciousMatches * 15));
             }
+
+            return new DomainReputation
+            {
+                Domain = domain,
+                IsCryptoRelated = true,
+                ReputationScore = baseScore,
+                ThreatLevel = suspiciousMatches >= 2 ? ThreatLevel.Medium : ThreatLevel.Low,
+                Category = "crypto-related",
+                Source = suspiciousMatches > 0 ? "pattern-analysis" : "unknown",
+                Notes = suspiciousMatches > 0 ? $"Matched {suspiciousMatches} suspicious pattern(s)" : null
+            };
         }
 
+        // Not crypto-related but has suspicious patterns
         if (suspiciousMatches > 0)
         {
-            reputation.ReputationScore = Math.Max(0, reputation.ReputationScore - (suspiciousMatches * 15));
-            reputation.ThreatLevel = suspiciousMatches >= 2 ? ThreatLevel.Medium : ThreatLevel.Low;
-            reputation.Notes = $"Matched {suspiciousMatches} suspicious pattern(s)";
-            reputation.Source = "pattern-analysis";
+            int scoreDeduction = suspiciousMatches * 15;
+            return new DomainReputation
+            {
+                Domain = domain,
+                ReputationScore = Math.Max(0, 50 - scoreDeduction),
+                ThreatLevel = suspiciousMatches >= 2 ? ThreatLevel.Medium : ThreatLevel.Low,
+                Category = "suspicious",
+                Source = "pattern-analysis",
+                Notes = $"Matched {suspiciousMatches} suspicious pattern(s)"
+            };
         }
 
         // Default: unknown reputation
-        if (reputation.ReputationScore == 0 && !reputation.IsMalicious)
+        return new DomainReputation
         {
-            reputation.ReputationScore = 50;  // Neutral
-            reputation.Source = "unknown";
-        }
-
-        return reputation;
+            Domain = domain,
+            ReputationScore = 50,  // Neutral
+            ThreatLevel = ThreatLevel.None,
+            Category = "unknown",
+            Source = "unknown"
+        };
     }
 
     private static string NormalizeDomain(string domain)

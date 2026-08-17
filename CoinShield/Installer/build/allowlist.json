@@ -1,0 +1,143 @@
+{
+  "comment": "CoinShield allowlist. Entries reduce the risk score but do NOT bypass monitoring entirely. Processes that change hash, spawn suspicious children, or exhibit genuine mining behaviour will still be flagged regardless of allowlist membership.",
+
+  "trustedPublishers": [
+    "Microsoft Corporation",
+    "NVIDIA Corporation",
+    "AMD Inc.",
+    "Intel Corporation",
+    "Valve Corporation",
+    "Epic Games, Inc.",
+    "Blizzard Entertainment",
+    "Electronic Arts",
+    "Python Software Foundation",
+    "Continuum Analytics, Inc.",
+    "Anaconda, Inc.",
+    "JetBrains s.r.o.",
+    "GitHub, Inc.",
+    "Google LLC",
+    "Apple Inc."
+  ],
+
+  "trustedExecutablePaths": [
+    "%ProgramFiles%\\Python*",
+    "%ProgramFiles(x86)%\\Python*",
+    "%LOCALAPPDATA%\\Programs\\Python\\*",
+    "%LOCALAPPDATA%\\Programs\\Microsoft VS Code\\*",
+    "%ProgramFiles%\\Microsoft Visual Studio\\*",
+    "%ProgramFiles%\\NVIDIA GPU Computing Toolkit\\*",
+    "%ProgramFiles%\\NVIDIA Corporation\\*",
+    "%ProgramFiles%\\Blender Foundation\\*",
+    "%ProgramFiles%\\DaVinci Resolve\\*",
+    "%ProgramFiles%\\Steam\\*",
+    "%ProgramFiles(x86)%\\Steam\\*",
+    "%ProgramFiles%\\Epic Games\\*",
+    "%LOCALAPPDATA%\\Packages\\*",
+    "%SystemRoot%\\System32\\*",
+    "%SystemRoot%\\SysWOW64\\*"
+  ],
+
+  "trustedProcessNames": [
+    "python", "python3",
+    "pythonw",
+    "jupyter", "jupyter-notebook", "jupyter-lab",
+    "code",
+    "devenv",
+    "blender",
+    "resolve",
+    "ffmpeg",
+    "nvcc",
+    "cuda-gdb"
+  ],
+
+  "trustedSha256Hashes": [
+  ],
+
+  "aiFrameworks": [
+    "torch",
+    "tensorflow",
+    "jax",
+    "onnxruntime",
+    "keras",
+    "sklearn",
+    "transformers",
+    "diffusers",
+    "xgboost",
+    "lightgbm",
+    "catboost",
+    "paddle",
+    "mxnet",
+    "caffe",
+    "theano",
+    "paddlepaddle"
+  ],
+
+  "aiScriptPatterns": [
+    "train",
+    "fit",
+    "finetune",
+    "fine_tune",
+    "pretrain",
+    "pre_train",
+    "evaluate",
+    "inference",
+    "predict",
+    "export_model",
+    "convert_model"
+  ],
+
+  "knownMiningProcessNames": [
+    "xmrig",
+    "xmr-stak",
+    "ccminer",
+    "cgminer",
+    "bfgminer",
+    "nbminer",
+    "gminer",
+    "t-rex",
+    "trex",
+    "teamredminer",
+    "lolminer",
+    "phoenixminer",
+    "ethminer",
+    "claymore",
+    "nanominer",
+    "srbminer",
+    "wildrig",
+    "miniz",
+    "kawpowminer",
+    "nsfminer",
+    "cpuminer",
+    "minerd"
+  ],
+
+  "knownMiningCommandLineTokens": [
+    "--pool",
+    "-o stratum",
+    "stratum+tcp",
+    "stratum+ssl",
+    "stratum2+tcp",
+    "stratum2+ssl",
+    "--wallet",
+    "--worker",
+    "--user",
+    "-u ",
+    "--pass",
+    "--algo",
+    "-a ",
+    "--hashrate",
+    "--intensity",
+    "--gpu-platform",
+    "--cpu-priority",
+    "--donate-level",
+    "--nicehash",
+    "mining.subscribe",
+    "mining.authorize",
+    "eth_submitLogin",
+    "eth_getWork",
+    "eth_submitWork"
+  ],
+
+  "knownMaliciousSha256Hashes": [
+  ]
+}

@@ -2,7 +2,7 @@
 #Requires -RunAsAdministrator
 <#
 .SYNOPSIS
-    CoinShield Anti-Mining Service — Installer v1.1
+    CoinShield Anti-Mining Service - Installer v1.1
 
 .DESCRIPTION
     Installs CoinShield.Service.exe and CoinShield.Watchdog.exe as Windows
@@ -43,13 +43,13 @@
 .PARAMETER Mode
     Operating mode for the detection engine.
     Values: Monitor | Enforcement | Emergency
-    Default: Monitor  (safe — no process termination, no shutdown)
+    Default: Monitor  (safe - no process termination, no shutdown)
 
 .PARAMETER NoWatchdog
     Skip installation of the Watchdog service.
 
 .PARAMETER Silent
-    Silent installation mode — no colored output, no user interaction.
+    Silent installation mode - no colored output, no user interaction.
     All events are still logged to Windows Event Log for audit trail.
     Suitable for GCP Startup Scripts and SCCM deployments.
 
@@ -110,7 +110,7 @@ function Write-EventLogSafe {
                 -EventId 999 -EntryType $EntryType -Message "[Installer] $msg" `
                 -ErrorAction SilentlyContinue
         }
-    } catch { <# silent — Event Log source may not exist yet #> }
+    } catch { <# silent - Event Log source may not exist yet #> }
 }
 
 # ── Constants ─────────────────────────────────────────────────────────────────
@@ -130,7 +130,7 @@ $LogDir             = Join-Path $env:ProgramData 'CoinShield\Logs'
 if (-not $Silent) {
     Write-Host ''
     Write-Host '═══════════════════════════════════════════════════════════' -ForegroundColor DarkCyan
-    Write-Host '  CoinShield Anti-Mining Service  —  Installer v1.1'        -ForegroundColor Cyan
+    Write-Host '  CoinShield Anti-Mining Service  -  Installer v1.1'        -ForegroundColor Cyan
     Write-Host '  Supports: Win 10/11, Server 2022/2025, Server Core, GCP'  -ForegroundColor DarkCyan
     Write-Host '═══════════════════════════════════════════════════════════' -ForegroundColor DarkCyan
     Write-Host ''
@@ -149,9 +149,12 @@ Write-Step 'Detecting OS edition and environment...'
 
 # Read OS info from registry (works on Server Core where WMI may be limited)
 $regKey         = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-$productName    = (Get-ItemProperty $regKey -ErrorAction SilentlyContinue).ProductName ?? ''
-$currentBuild   = [int]((Get-ItemProperty $regKey -ErrorAction SilentlyContinue).CurrentBuild ?? '0')
-$installType    = (Get-ItemProperty $regKey -ErrorAction SilentlyContinue).InstallationType ?? ''
+$productNameRaw = (Get-ItemProperty $regKey -ErrorAction SilentlyContinue).ProductName
+$productName    = if ($productNameRaw) { $productNameRaw } else { '' }
+$currentBuildRaw = (Get-ItemProperty $regKey -ErrorAction SilentlyContinue).CurrentBuild
+$currentBuild   = if ($currentBuildRaw) { [int]$currentBuildRaw } else { 0 }
+$installTypeRaw = (Get-ItemProperty $regKey -ErrorAction SilentlyContinue).InstallationType
+$installType    = if ($installTypeRaw) { $installTypeRaw } else { '' }
 
 $isWindowsServer = $productName -match 'Server'
 $isServerCore    = $installType -eq 'Server Core'
@@ -164,13 +167,13 @@ elseif ($isServer2022)     { Write-Ok "OS: Windows Server 2022 (build $currentBu
 elseif ($isWindowsServer)  { Write-Ok "OS: Windows Server (build $currentBuild)" }
 else                       { Write-Ok "OS: Windows Desktop (build $currentBuild)" }
 
-if ($isServerCore)    { Write-Ok 'Mode: Server Core (headless — no Desktop Experience)' }
-if ($isNanoServer)    { Write-Warn 'Mode: Nano Server — limited compatibility, proceeding.' }
+if ($isServerCore)    { Write-Ok 'Mode: Server Core (headless - no Desktop Experience)' }
+if ($isNanoServer)    { Write-Warn 'Mode: Nano Server - limited compatibility, proceeding.' }
 
 # Auto-enable AutoInstallDotNet on Server Core (no package manager / GUI)
 if ($isServerCore -and -not $AutoInstallDotNet) {
     $AutoInstallDotNet = $true
-    Write-Ok 'Server Core detected — AutoInstallDotNet enabled automatically.'
+    Write-Ok 'Server Core detected - AutoInstallDotNet enabled automatically.'
 }
 
 # ── GCP detection ─────────────────────────────────────────────────────────────
@@ -206,7 +209,7 @@ try {
         $rawMachineType = Get-GcpMeta 'instance/machine-type'
         $gcpMachineType = ($rawMachineType -split '/')[-1]
 
-        # Read custom metadata key "coinshield-mode" — allows per-VM mode override
+        # Read custom metadata key "coinshield-mode" - allows per-VM mode override
         $gcpMode = Get-GcpMeta 'instance/attributes/coinshield-mode'
         if ($gcpMode -and $gcpMode -in @('Monitor','Enforcement','Emergency')) {
             $Mode = $gcpMode
@@ -217,7 +220,7 @@ try {
         Write-Ok "  Project: $gcpProject  Zone: $gcpZone  Type: $gcpMachineType"
     }
 } catch {
-    # Not on GCP or metadata server unreachable — on-premises
+    # Not on GCP or metadata server unreachable - on-premises
 }
 
 if (-not $isGcp) {
@@ -317,9 +320,9 @@ foreach ($file in $filesToCopy) {
     }
     if (-not $copied) {
         if ($file -in @($ServiceExe, $WatchdogExe)) {
-            Write-Warn "$file not found — build the solution first (dotnet publish)."
+            Write-Warn "$file not found - build the solution first (dotnet publish)."
         } else {
-            Write-Warn "$file not found in source — default will be used if present."
+            Write-Warn "$file not found in source - default will be used if present."
         }
     }
 }
@@ -406,7 +409,7 @@ Remove-ServiceIfExists $ServiceName
 
 $svcExePath = Join-Path $InstallDir $ServiceExe
 if (-not (Test-Path $svcExePath)) {
-    Write-Warn "$ServiceExe not found at $svcExePath — service registration skipped."
+    Write-Warn "$ServiceExe not found at $svcExePath - service registration skipped."
     Write-Warn "Build the solution and re-run the installer."
 } else {
     & sc.exe create $ServiceName `
@@ -459,7 +462,7 @@ if (-not $NoWatchdog) {
 
     $wdExePath = Join-Path $InstallDir $WatchdogExe
     if (-not (Test-Path $wdExePath)) {
-        Write-Warn "$WatchdogExe not found — Watchdog service skipped."
+        Write-Warn "$WatchdogExe not found - Watchdog service skipped."
     } else {
         & sc.exe create $WatchdogName `
             binPath= "`"$wdExePath`"" `
@@ -473,7 +476,7 @@ if (-not $NoWatchdog) {
     }
 }
 
-# ── Step 10: On Server 2022/2025 — set description length compatible notes ─────
+# ── Step 10: On Server 2022/2025 - set description length compatible notes ─────
 if ($isWindowsServer) {
     # Increase SCM failure threshold for server environments (more resilient)
     foreach ($svcName in @($ServiceName, $WatchdogName)) {
@@ -522,11 +525,11 @@ if (-not $Silent) {
                  elseif ($isWindowsServer) { 'Windows Server' }
                  else { 'Windows Desktop' }
 
-    Write-Host "  Service:     $ServiceName — $(if ($mainSvc) { $mainSvc.Status } else { 'NOT INSTALLED' })"
+    Write-Host "  Service:     $ServiceName - $(if ($mainSvc) { $mainSvc.Status } else { 'NOT INSTALLED' })"
     Write-Host "  Watchdog:    $(if ($wdSvc) { $wdSvc.Status } else { 'NOT INSTALLED' })"
     Write-Host "  Mode:        $Mode"
     Write-Host "  OS:          $osEdition (build $currentBuild)$(if ($isServerCore) { ' [Server Core]' })"
-    Write-Host "  Cloud:       $(if ($isGcp) { "GCP — $gcpProject / $gcpZone / $gcpMachineType" } else { 'On-Premises' })"
+    Write-Host "  Cloud:       $(if ($isGcp) { "GCP - $gcpProject / $gcpZone / $gcpMachineType" } else { 'On-Premises' })"
     Write-Host "  Install dir: $InstallDir"
     Write-Host "  Log dir:     $LogDir"
     Write-Host "  UI:          NONE (headless service)"
