@@ -308,6 +308,7 @@ $filesToCopy = @(
 $buildOutput  = Split-Path $SourceDir -Parent
 $searchPaths  = @(
     $SourceDir,
+    (Join-Path $SourceDir 'build'),  # Installer\build directory
     $buildOutput,
     (Join-Path $buildOutput 'CoinShield.Service\bin\Release\net10.0-windows\win-x64\publish'),
     (Join-Path $buildOutput 'CoinShield.Service\bin\Release\net10.0-windows\win-x64'),
