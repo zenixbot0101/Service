@@ -125,7 +125,7 @@ if ($LASTEXITCODE -eq 0) {
     Get-Service CoinShield, CoinShieldWatchdog | 
         Format-Table Status, Name, DisplayName -AutoSize
     
-    Write-Host "`n💡 View logs:" -ForegroundColor Yellow
+    Write-Host "`nView logs:" -ForegroundColor Yellow
     Write-Host "   Get-EventLog -LogName Application -Source CoinShield -Newest 10" -ForegroundColor Gray
 } else {
     Write-Host "`n❌ Installation failed!" -ForegroundColor Red
