@@ -70,7 +70,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string] $InstallDir  = 'C:\Program Files\CoinShield',
-    [string] $SourceDir   = $PSScriptRoot,
+    [string] $SourceDir   = '',
     [ValidateSet('Monitor','Enforcement','Emergency')]
     [string] $Mode        = 'Monitor',
     [switch] $NoWatchdog,
@@ -80,6 +80,15 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+# Fix: Handle empty $PSScriptRoot
+if ([string]::IsNullOrEmpty($SourceDir)) {
+    if ([string]::IsNullOrEmpty($PSScriptRoot)) {
+        $SourceDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+    } else {
+        $SourceDir = $PSScriptRoot
+    }
+}
 
 # ── Output helpers ────────────────────────────────────────────────────────────
 function Write-Step  {
