@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- WMI / Windows management for GPU, process, network queries -->
+    <PackageReference Include="System.Management" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoinShield.Models\CoinShield.Models.csproj" />
+    <ProjectReference Include="..\CoinShield.Configuration\CoinShield.Configuration.csproj" />
+    <ProjectReference Include="..\CoinShield.Logging\CoinShield.Logging.csproj" />
+  </ItemGroup>
+</Project>
